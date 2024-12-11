@@ -10,59 +10,96 @@ class BudgetSimulator extends StatefulWidget {
 class _BudgetSimulatorState extends State<BudgetSimulator> {
   final _formKey = GlobalKey<FormState>();
 
+// INITIALIZE DYNAMIC LISTS
   final List<Map<String, dynamic>> _revenues = [];
   final List<Map<String, dynamic>> _expenses = [];
 
+// FUNCTION TO REFRESH THE PAGE
+  void _refreshPage() {
+    setState(() {
+      _revenues.clear();
+      _expenses.clear();
+    });
+  }
+
+// ADD REVENUE ROW FUNCTION
   void _addRevenueRow() {
     setState(() {
       _revenues.add({'type': '', 'amount': TextEditingController()});
     });
   }
 
+// ADD EXPENSE ROW FUNCTION
   void _addExpenseRow() {
     setState(() {
       _expenses.add({'type': '', 'amount': TextEditingController()});
     });
   }
 
+// REMOVE ROW FUNCTION
+  void _removeRow(List<Map<String, dynamic>> list, int index) {
+    setState(() {
+      list.removeAt(index);
+    });
+  }
+
+// ITERATE THROUGH THE LISTS AND CALCULATE TOTAL AMOUNTS
   double _calculateTotal(List<Map<String, dynamic>> items) {
     double total = 0;
     for (var item in items) {
+
+// RETRIEVE THE AMOUNT
       final amountText = item['amount'].text;
       if (amountText.isNotEmpty && double.tryParse(amountText) != null) {
+
+// ADD TO TOTAL
         total += double.parse(amountText);
       }
     }
     return total;
   }
 
+// GETTER FOR THE FUNCTION CALCULATE_TOTAL WITH PARAMETERS
   double get totalRevenues => _calculateTotal(_revenues);
   double get totalExpenses => _calculateTotal(_expenses);
   double get balance => totalRevenues - totalExpenses;
 
+
+// FUNCTION FOR ALERT WITH ALL DETAILS INSERTED AND TOTALS
   void _showSummaryDialog(BuildContext context) {
+
+// INITIALIZE THE ALERT BODY
     String summary = 'Revenus :\n';
+
     for (var revenue in _revenues) {
+// RETRIEVE THE TYPE
       final type = revenue['type'] ?? 'Inconnu';
-      final amount = revenue['amount'].text.isNotEmpty
-          ? revenue['amount'].text
-          : '0';
+
+// RETRIEVE THE AMOUNT
+      final amount =
+          revenue['amount'].text.isNotEmpty ? revenue['amount'].text : '0';
+
+// ADD A LINE CONTAIN THE DETAILS TO THE REVENUES DETAILS
       summary += '- $type : $amount TND\n';
     }
 
     summary += '\nDépenses :\n';
     for (var expense in _expenses) {
       final type = expense['type'] ?? 'Inconnu';
-      final amount = expense['amount'].text.isNotEmpty
-          ? expense['amount'].text
-          : '0';
+      final amount =
+          expense['amount'].text.isNotEmpty ? expense['amount'].text : '0';
+
+// ADD A LINE CONTAIN THE DETAILS TO THE EXPENSES DETAILS
       summary += '- $type : $amount TND\n';
     }
 
-    summary += '\nTotal des revenus : ${totalRevenues.toStringAsFixed(2)} TND\n';
+// ADD A LINE CONTAIN THE DETAILS TO THE TOTALS
+    summary +=
+        '\nTotal des revenus : ${totalRevenues.toStringAsFixed(2)} TND\n';
     summary += 'Total des dépenses : ${totalExpenses.toStringAsFixed(2)} TND\n';
     summary += 'Solde restant : ${balance.toStringAsFixed(2)} TND';
 
+// INITIALIZE THE DIALOG WITH HEADER AND CONTENT FROM THE ALERT
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -104,18 +141,25 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
 // REVENUES Section
               const Text(
                 'Revenus',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              ..._revenues.map((revenue) {
+
+// TRANSFORM OF LIST _revenues TO Map ['salaire',..] devient {0: 'salaire',..}
+// ENTRIES RETURNS A COLLECTION OF KEY-VALUE PAIRS
+              ..._revenues.asMap().entries.map((entry) {
+
+// INDEX OF THE ELEMENT
+                int index = entry.key;
+
+// THE ELEMENT ITSELF
+                var revenue = entry.value;
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
                     children: [
-
 // REVENUES Type
                       Expanded(
                         child: TextFormField(
@@ -132,6 +176,7 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                           onChanged: (value) => revenue['type'] = value,
                         ),
                       ),
+
                       const SizedBox(width: 8),
 
 // REVENUES Amount
@@ -156,6 +201,10 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                           },
                         ),
                       ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.black26),
+                        onPressed: () => _removeRow(_revenues, index),
+                      ),
                     ],
                   ),
                 );
@@ -174,7 +223,15 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                 'Dépenses',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              ..._expenses.map((expense) {
+
+// TRANSFORM OF LIST _expenses TO Map ['transport',...] devient {0: 'transport',...'}
+// ENTRIES RETURNS A COLLECTION OF KEY-VALUE PAIRS
+              ..._expenses.asMap().entries.map((entry) {
+// INDEX OF THE ELEMENT
+                int index = entry.key;
+
+// THE ELEMENT ITSELF
+                var expense = entry.value;
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
@@ -183,9 +240,8 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            labelText: 'Type de dépense',
-                            hintText: 'Transport, Internet, Habillement...'
-                          ),
+                              labelText: 'Type de dépense',
+                              hintText: 'Transport, Internet, Habillement...'),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Entrez un type';
@@ -219,6 +275,10 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                           },
                         ),
                       ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.black26),
+                        onPressed: () => _removeRow(_expenses, index),
+                      ),
                     ],
                   ),
                 );
@@ -232,18 +292,21 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
 
               const SizedBox(height: 20),
 
-              // Totals
+// TOTALS
               Text(
                 'Total des revenus : ${totalRevenues.toStringAsFixed(2)} TND',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
                 'Total des dépenses : ${totalExpenses.toStringAsFixed(2)} TND',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
                 'Solde restant : ${balance.toStringAsFixed(2)} TND',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 20),
@@ -260,6 +323,12 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
             ],
           ),
         ),
+      ),
+
+// REFRESH BUTTON
+      floatingActionButton: FloatingActionButton(
+        onPressed: _refreshPage,
+        child: const Icon(Icons.refresh),
       ),
     );
   }

@@ -14,7 +14,7 @@ class _CurrencyConverter extends State<CurrencyConverter> {
   String _res = "";
   String _selectedCurrency = 'EUR';
 
-  // Function to REFRESH the page
+// FUNCTION FOR REFRESH THE PAGE
   void _refreshPage() {
     setState(() {
       _res = ""; // Reset result
@@ -23,7 +23,7 @@ class _CurrencyConverter extends State<CurrencyConverter> {
     });
   }
 
-  // CONVERSION Function
+// CONVERSION Function
   void _calculate() {
     if (_formKey.currentState!.validate()) {
       double montant = double.parse(_amountController.text);
@@ -31,11 +31,12 @@ class _CurrencyConverter extends State<CurrencyConverter> {
       setState(() {
         _res = (montant * taux).toStringAsFixed(2); // FORMAT RESULT
       });
+// SUCCESS CASE
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Conversion terminée avec succès")),
       );
 
-      //ERROR CASE
+// ERROR CASE
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Erreur")));
@@ -60,7 +61,7 @@ class _CurrencyConverter extends State<CurrencyConverter> {
         backgroundColor: Colors.teal,
       ),
 
-
+// BODY
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -71,7 +72,7 @@ class _CurrencyConverter extends State<CurrencyConverter> {
               const Text("Convertisseur de Monnaie", style: TextStyle(fontSize: 20)),
               const SizedBox(height: 25),
 
-              // Amount field
+// AMOUNT FIELD
               TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -92,11 +93,11 @@ class _CurrencyConverter extends State<CurrencyConverter> {
                   ),
                 ),
               ),
-              // END Amount field
+// END AMOUNT FIELD
 
               const SizedBox(height: 25),
 
-              // Dropdown menu
+// DROPDOWN
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.attach_money_sharp),
@@ -119,28 +120,29 @@ class _CurrencyConverter extends State<CurrencyConverter> {
                   });
                 },
               ),
-              // END Dropdown menu
+// END DROPDOWN
 
               const SizedBox(height: 25),
 
-              // Result field
+// RESULT FIELD
               Text(
                 "Résultat: $_res $_selectedCurrency",
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 25),
 
-              // Calculate button
+// CALCULATE BUTTON
               ElevatedButton(
                 onPressed: _calculate,
                 child: const Text("Calculate"),
               ),
-              // END BUTTON
+// END BUTTON
             ],
           ),
         ),
       ),
-      // Floating action button to refresh the page
+
+// REFRESH BUTTON
       floatingActionButton: FloatingActionButton(
         onPressed: _refreshPage,
         child: const Icon(Icons.refresh),

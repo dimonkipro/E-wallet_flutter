@@ -34,14 +34,14 @@ class Home extends StatelessWidget {
 
         backgroundColor: Colors.grey[200],
 
-        // BODY BEGIN
+// BODY BEGIN
 
         body: IntroductionScreen(
           showDoneButton: false,
           showNextButton: false,
           pages: [
 
-            // FIRST SERVICE
+// FIRST SERVICE
 
             PageViewModel(
                 title: "Simulateur de Budget \n 👛",
@@ -64,7 +64,7 @@ class Home extends StatelessWidget {
                 )
             ),
 
-            //SECOND SERVICE
+//SECOND SERVICE
 
             PageViewModel(
                 title: " Convertisseur de Monnaie \n💸",
