@@ -43,6 +43,17 @@ class _CurrencyConverter extends State<CurrencyConverter> {
     }
   }
 
+  final ButtonStyle style =
+  ElevatedButton.styleFrom(
+    textStyle: const TextStyle(fontSize: 20, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+    foregroundColor: Colors.teal[800],
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8), // Rounded corners
+    ),
+  );
+
+ // ---------------------------- END OF FUNCTIONS -----------------------------
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +80,9 @@ class _CurrencyConverter extends State<CurrencyConverter> {
           child: Column(
             children: [
               const SizedBox(height: 25),
-              const Text("Convertisseur de Monnaie", style: TextStyle(fontSize: 20)),
+              const Text("Convertisseur de Monnaie",
+                  style: TextStyle(fontSize: 20,color: Colors.teal, fontWeight: FontWeight.bold)
+              ),
               const SizedBox(height: 25),
 
 // AMOUNT FIELD
@@ -91,6 +104,11 @@ class _CurrencyConverter extends State<CurrencyConverter> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
+                  focusedBorder: OutlineInputBorder( // Border when the field is focused
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                  ),
+                  prefixIconColor: Colors.teal[800],
                 ),
               ),
 // END AMOUNT FIELD
@@ -104,6 +122,11 @@ class _CurrencyConverter extends State<CurrencyConverter> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
+                  focusedBorder: OutlineInputBorder( // Border when the field is focused
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                  ),
+                  prefixIconColor: Colors.teal[800],
                   labelText: "Devise cible",
                   hintText: "Choisir une devise ...",
                 ),
@@ -127,12 +150,13 @@ class _CurrencyConverter extends State<CurrencyConverter> {
 // RESULT FIELD
               Text(
                 "Résultat: $_res $_selectedCurrency",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueGrey)
               ),
               const SizedBox(height: 25),
 
 // CALCULATE BUTTON
               ElevatedButton(
+                style: style,
                 onPressed: _calculate,
                 child: const Text("Calculate"),
               ),

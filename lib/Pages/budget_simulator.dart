@@ -161,6 +161,25 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
       return Colors.blue;
     }
   }
+// STYLE FOR BUTTONS
+  final ButtonStyle style =
+  ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontFamily: "Roboto"),
+      foregroundColor: Colors.teal[800],
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8), // Rounded corners
+    ),
+
+  );
+
+  final ButtonStyle stylesub =
+  ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 20, fontFamily: "Roboto", fontWeight: FontWeight.bold),
+      foregroundColor: Colors.teal[800],
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8), // Rounded corners
+    ),
+  );
 
 
 // ------------------ END OF FUNCTIONS AND DECLARATION ------------------------
@@ -214,9 +233,13 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
     // REVENUES Type
                         Expanded(
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Type de revenu',
                               hintText: 'Salaire, Retraite, Loyer...',
+                              focusedBorder: OutlineInputBorder( // Border when the field is focused
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.black, width: 0),
+                              ),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -234,8 +257,12 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                         Expanded(
                           child: TextFormField(
                             controller: revenue['amount'],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Montant (TND)',
+                              focusedBorder: OutlineInputBorder( // Border when the field is focused
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.black, width: 0),
+                              ),
                             ),
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -263,6 +290,7 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
 
     // ADD REVENUES BUTTON
                 ElevatedButton(
+                  style: style,
                   onPressed: _addRevenueRow,
                   child: const Text('Ajouter un revenu'),
                 ),
@@ -290,9 +318,15 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
     // EXPENSES Type
                         Expanded(
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 labelText: 'Type de dépense',
-                                hintText: 'Transport, Internet, Habillement...'),
+                                hintText: 'Transport, Internet, Habillement...',
+                              focusedBorder: OutlineInputBorder( // Border when the field is focused
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.black, width: 0),
+                              ),
+                            ),
+
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Entrez un type';
@@ -308,8 +342,12 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                         Expanded(
                           child: TextFormField(
                             controller: expense['amount'],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Montant (TND)',
+                              focusedBorder: OutlineInputBorder( // Border when the field is focused
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.black, width: 0),
+                              ),
                             ),
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -337,6 +375,7 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
 
     // ADD EXPENSES BUTTON
                 ElevatedButton(
+                  style: style,
                   onPressed: _addExpenseRow,
                   child: const Text('Ajouter une dépense'),
                 ),
@@ -372,7 +411,9 @@ class _BudgetSimulatorState extends State<BudgetSimulator> {
                 const SizedBox(height: 20),
 
 // SUBMIT BUTTON
+
                 ElevatedButton(
+                  style: stylesub,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _showSummaryDialog(context);
