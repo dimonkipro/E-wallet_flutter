@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
             // FIRST SERVICE
 
             PageViewModel(
-                title: "Simulateur de Budget",
+                title: "Simulateur de Budget \n 👛",
                 body: "Ce calculateur vous aidera à établir un budget "
                     "simplifié Il est facile à remplir.",
                 image: Image.asset("assets/budget.png"),
@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
             //SECOND SERVICE
 
             PageViewModel(
-                title: "Convertisseur de Monnaie",
+                title: " Convertisseur de Monnaie \n💸",
                 body: "Tapez dans le champ concerné les"
                     " symboles de devise ISO à 3 lettres et le montant a convertir."
                     " Vous pouvez convertir des devises mondiales",
